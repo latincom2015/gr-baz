@@ -1,0 +1,61 @@
+#!/bin/sh
+
+# Constants
+PYTHON_VER=2.7
+
+# Arguments
+MODULE="$1"
+
+# Checks
+if [ -z "$MODULE" ]; then
+	echo "Please supply the module name"
+	return
+fi
+
+# Variables
+BASE_PATH="$MODULE"
+
+if ! [ -d "$BASE_PATH" ]; then
+	BASE_PATH="$HOME/install/$MODULE"
+	if ! [ -d "$BASE_PATH" ]; then
+		echo "$BASE_PATH is not a valid directory"
+		return
+	fi
+fi
+
+echo "Entering $BASE_PATH"
+
+# Sub-environment
+export SUBENV_PATH=$BASE_PATH/bin
+export PATH=$SUBENV_PATH:$PATH
+export LD_LIBRARY_PATH=$BASE_PATH/lib64:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$BASE_PATH/lib:$LD_LIBRARY_PATH
+
+export DYLD_LIBRARY_PATH=$BASE_PATH/lib:$DYLD_LIBRARY_PATH
+
+export PYTHONPATH=$BASE_PATH/lib64/python$PYTHON_VER/site-packages:$PYTHONPATH
+export PYTHONPATH=$BASE_PATH/lib64/python$PYTHON_VER/dist-packages:$PYTHONPATH
+export PYTHONPATH=$BASE_PATH/lib/python$PYTHON_VER/site-packages:$PYTHONPATH
+export PYTHONPATH=$BASE_PATH/lib/python$PYTHON_VER/dist-packages:$PYTHONPATH
+# sitecustomize.py should be used to add any further directories via sys.path (e.g. a local 'gnuradio')
+
+export PKG_CONFIG_PATH=$BASE_PATH/lib64/pkgconfig:$PKG_CONFIG_PATH
+export PKG_CONFIG_PATH=$BASE_PATH/lib/pkgconfig:$PKG_CONFIG_PATH
+
+if [ -e $BASE_PATH/subenv.init ]; then
+	echo "Executing initialisation script..."
+	. $BASE_PATH/subenv.init
+fi
+
+# 'export' is necessary
+# FIXME: If $MODULE is a full path, extract last directory
+if [ -z "$SUBENV" ]; then
+	export SUBENV="$MODULE"
+else
+	export SUBENV="$SUBENV:$MODULE"
+fi
+
+# Start the new session
+$SHELL -i
+
+echo "Exiting $BASE_PATH"

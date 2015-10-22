@@ -1,0 +1,44 @@
+gr-baz by Balint Seeber (http://spench.net/contact)
+
+Information, documentation & samples: http://wiki.spench.net/wiki/gr-baz
+
+Copyright 2011-2014 Balint Seeber <balint256@gmail.com>
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+MA 02110-1301, USA.
+
+To build:
+
+git clone git://github.com/balint256/gr-baz.git
+OR
+git clone https://github.com/balint256/gr-baz.git
+OR
+svn co http://svn.spench.net/main/gr-baz
+
+cd gr-baz
+mkdir build
+(OR put your build directory elsewhere, e.g. ~/build/gr-baz)
+
+cd build
+(OR where your build directory is)
+
+cmake ..
+OR
+cmake-gui ..
+(OR replace '..' with where you checked out the source)
+
+make
+sudo make install
+sudo ldconfig
